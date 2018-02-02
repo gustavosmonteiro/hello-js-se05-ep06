@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <ul id="catlist">
+      <!-- dynamic content goes here -->
+    </ul>
+    <!-- https://cdnjs.com/libraries/axios -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.js"></script>
+    <script>
+      // index.html
+      const api = axios.create({
+        baseURL:"https://api.github.com"
+      })
+      // https://developer.github.com/v3/issues/#issues
+      api.get("/repos/sombriks/hello-js-v5/issues").then(ret => {
+        console.log(ret)
+        ret.data.map(e => {
+          const li = document.createElement("li")
+          li.innerHTML = `<a href="${e.url}">${e.title}</a>`
+          document.getElementById("catlist").appendChild(li)
+        })
+      }).catch(err => {
+        console.log(err)
+        const li = document.createElement("li")
+        li.innerHTML = "erro!"
+        document.getElementById("catlist").appendChild(li)
+      })
+    </script>
+  </body>
+</html>
