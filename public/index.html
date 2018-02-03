@@ -6,24 +6,47 @@
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   </head>
   <body>
-    <ul id="v-for-list" class="demo">
-      <li v-for="value in list">
-        {{ value.namecontact }}
-      </li>
-    </ul>
+    <div id="app">
+      <form @submit.prevent="addcontact">
+        <label>Name <input v-model="contact.namecontact" required></input></label></br>
+        <label>Telephone <input v-model="contact.telephonecontact"></input></label></br>
+        <label>Birth Date <input v-model="contact.birthdatecontact"></input></label></br>
+        <input type="submit"/>
+      </form>
+      <ul>
+          <li v-for="value in contacts">
+            {{ value.namecontact }} {{ value.telephonecontact }} {{ value.birthdatecontact }}
+          </li>
+      </ul>
+
+    </div>
+    
     <script>
       const api = axios.create({
         baseURL:"http://localhost:3000"
       })
 
       new Vue({
-        el: '#v-for-list',
+        el: '#app',
         data: {
-          list: null
+          contacts: null,
+          contact: {
+            namecontact: "",
+            telephonecontact: "",
+            birthdatecontact: ""
+          }
         },
         created(){
-          api.get("/listcontacts")
-            .then(ret => this.list = ret.data)
+          this.listcontacts()
+        },
+        methods:{
+          listcontacts(){
+            api.get("/listcontacts").then(ret => this.contacts = ret.data)
+          },
+          addcontact(){
+            api.post("/addcontact", this.contact).then(this.listcontacts)
+          }
+
         }
       })
     </script>
