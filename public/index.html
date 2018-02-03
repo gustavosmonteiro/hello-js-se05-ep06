@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>hello-js-se05-ep-06</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  </head>
+  <body>
+    <ul id="v-for-list" class="demo">
+      <li v-for="value in list">
+        {{ value.namecontact }}
+      </li>
+    </ul>
+    <script>
+      const api = axios.create({
+        baseURL:"http://localhost:3000"
+      })
+
+      new Vue({
+        el: '#v-for-list',
+        data: {
+          list: null
+        },
+        created(){
+          api.get("/listcontacts")
+            .then(ret => this.list = ret.data)
+        }
+      })
+    </script>
+  </body>
+</html>
