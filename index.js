@@ -43,7 +43,8 @@ app.post("/addcontact", (req, res) => {
 
 app.put("/editcontact/:idcontact", (req, res) => {
     const contact = req.body
-    knex("contact").update(contact, "idcontact").then(ret => {
+    const id = req.params.idcontact
+    knex("contact").update(contact).where("idcontact", id).then(ret => {
       res.send(ret[0])
     }).catch(err => {
       res.status(500).send(err)
